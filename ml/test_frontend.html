@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna Care AI - PCOS Prediction Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffeef8, #f0e6ff);
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #d946ef;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #374151;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #d946ef, #a855f7);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #c026d3, #9333ea);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result.low { background: #d1fae5; border: 2px solid #10b981; }
+        .result.moderate { background: #fef3c7; border: 2px solid #f59e0b; }
+        .result.high { background: #fee2e2; border: 2px solid #ef4444; }
+        
+        .loading {
+            text-align: center;
+            color: #6b7280;
+            display: none;
+        }
+        
+        .recommendations {
+            margin-top: 15px;
+        }
+        
+        .recommendations h4 {
+            color: #374151;
+            margin-bottom: 10px;
+        }
+        
+        .recommendations ul {
+            padding-left: 20px;
+        }
+        
+        .recommendations li {
+            margin-bottom: 5px;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 Luna Care AI - PCOS Risk Prediction</h1>
+        
+        <form id="pcosForm">
+            <div class="form-group">
+                <label for="age">Age (years):</label>
+                <input type="number" id="age" name="age" required min="15" max="50" value="25">
+            </div>
+            
+            <div class="form-group">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" name="weight" required min="40" max="150" value="60">
+            </div>
+            
+            <div class="form-group">
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height" name="height" required min="140" max="200" value="165">
+            </div>
+            
+            <div class="form-group">
+                <label for="cycle">Menstrual Cycle:</label>
+                <select id="cycle" name="cycle" required>
+                    <option value="1">Regular</option>
+                    <option value="0">Irregular</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="weight_gain">Recent Weight Gain:</label>
+                <select id="weight_gain" name="weight_gain">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="hair_growth">Excessive Hair Growth:</label>
+                <select id="hair_growth" name="hair_growth">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="pimples">Acne/Pimples:</label>
+                <select id="pimples" name="pimples">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="exercise">Regular Exercise:</label>
+                <select id="exercise" name="exercise">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            
+            <button type="submit">🤖 Get AI Prediction</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            🔮 AI is analyzing your data...
+        </div>
+        
+        <div class="result" id="result">
+            <h3 id="resultTitle"></h3>
+            <p><strong>Risk Score:</strong> <span id="riskScore"></span>%</p>
+            <p><strong>Confidence:</strong> <span id="confidence"></span>%</p>
+            <p><strong>Model Accuracy:</strong> <span id="modelAccuracy"></span>%</p>
+            
+            <div class="recommendations">
+                <h4>🤖 AI Recommendations:</h4>
+                <ul id="recommendationsList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('pcosForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = parseFloat(value) || 0;
+            }
+            
+            // Calculate BMI
+            data['BMI'] = (data.weight / ((data.height / 100) ** 2)).toFixed(1);
+            
+            // Map form fields to API expected names
+            const apiData = {
+                'Age (yrs)': data.age,
+                'Weight (Kg)': data.weight,
+                'Height(Cm)': data.height,
+                'BMI': parseFloat(data.BMI),
+                'cycle_regular': data.cycle,
+                'weight_gain': data.weight_gain,
+                'hair_growth': data.hair_growth,
+                'pimples': data.pimples,
+                'regular_exercise': data.exercise
+            };
+            
+            try {
+                const response = await fetch('http://localhost:5000/predict-pcos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(apiData)
+                });
+                
+                const result = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                if (result.success) {
+                    // Show results
+                    const resultDiv = document.getElementById('result');
+                    const riskLevel = result.risk_level.toLowerCase();
+                    
+                    // Set result class for styling
+                    resultDiv.className = `result ${riskLevel}`;
+                    resultDiv.style.display = 'block';
+                    
+                    // Risk level emoji
+                    const riskEmoji = {
+                        'low': '✅',
+                        'moderate': '🟡',
+                        'high': '⚠️',
+                        'very high': '🚨'
+                    };
+                    
+                    document.getElementById('resultTitle').textContent = 
+                        `${riskEmoji[riskLevel] || '❓'} ${result.risk_level} PCOS Risk`;
+                    document.getElementById('riskScore').textContent = result.risk_score;
+                    document.getElementById('confidence').textContent = result.confidence;
+                    document.getElementById('modelAccuracy').textContent = result.model_accuracy;
+                    
+                    // Add recommendations
+                    const recList = document.getElementById('recommendationsList');
+                    recList.innerHTML = '';
+                    result.recommendations.forEach(rec => {
+                        const li = document.createElement('li');
+                        li.textContent = rec;
+                        recList.appendChild(li);
+                    });
+                    
+                } else {
+                    alert('Prediction failed: ' + result.error);
+                }
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                alert('Error connecting to AI API: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

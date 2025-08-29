@@ -1,0 +1,714 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@layer base {
+  * {
+    border-color: #e5e7eb; /* border-gray-200 */
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #fefefe 0%, #fce7f3 50%, #fbcfe8 100%);
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background-attachment: fixed;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #fdf2f8; /* luna-50 */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #f9a8d4; /* luna-300 */
+    border-radius: 9999px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #f472b6; /* luna-400 */
+  }
+}
+
+@layer components {
+  /* Luna Care signature styles */
+  .luna-card {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 24px rgba(236,72,153,0.08);
+    transition: box-shadow 0.5s, transform 0.5s;
+  }
+  .luna-card:hover {
+    box-shadow: 0 8px 32px rgba(236,72,153,0.16);
+    transform: scale(1.02);
+  }
+  
+  .luna-button {
+    background: linear-gradient(90deg, #ec4899 0%, #f472b6 100%);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 24px rgba(236,72,153,0.08);
+    transition: box-shadow 0.3s, transform 0.3s;
+    transform: translateY(0);
+  }
+  .luna-button:hover {
+    box-shadow: 0 8px 32px rgba(236,72,153,0.16);
+    transform: translateY(-4px);
+  }
+  .luna-button:active {
+    transform: translateY(0);
+  }
+  
+  .luna-input {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(4px);
+    border: 2px solid rgba(251,207,232,0.5);
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    color: #374151;
+  }
+  .luna-input:focus {
+    border-color: #f472b6;
+    box-shadow: 0 0 0 4px rgba(236,72,153,0.2);
+    outline: none;
+  }
+  .luna-input::placeholder {
+    color: #9ca3af;
+  }
+  
+  .luna-gradient-text {
+    background: linear-gradient(90deg, #db2777 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .floating-element {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Beautiful form styles - Fixed */
+  .form-floating {
+    position: relative;
+  }
+  
+  .form-floating input {
+    width: 100%;
+    padding: 1rem;
+    padding-top: 1.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    border: 2px solid rgba(244, 114, 182, 0.2);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+  
+  .form-floating input::placeholder {
+    color: transparent;
+  }
+  
+  .form-floating input:focus {
+    border-color: rgba(236, 72, 153, 1);
+    box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.2);
+  }
+  
+  .form-floating label {
+    position: absolute;
+    left: 1rem;
+    top: 0.5rem;
+    font-size: 0.75rem;
+    color: rgb(219, 39, 119);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    pointer-events: none;
+  }
+  
+  .form-floating input:placeholder-shown + label {
+    font-size: 1rem;
+@layer utilities {
+  /* Text effects */
+  .text-shadow-soft {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Background patterns */
+  .bg-dots {
+    background-image: radial-gradient(circle, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .bg-grid {
+    background-image: 
+      linear-gradient(rgba(236, 72, 153, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(236, 72, 153, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Responsive text sizes */
+  .text-responsive {
+    font-size: 0.875rem;
+  }
+  @media (min-width: 640px) {
+    .text-responsive {
+      font-size: 1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-responsive {
+      font-size: 1.125rem;
+    }
+  }
+  
+/* Beautiful focus states */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(236,72,153,0.3);
+  border-color: #f472b6;
+}
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+  }
+  
+  /* Custom checkbox styles */
+  .luna-checkbox {
+/* Mobile-first responsive design helpers */
+@media (max-width: 640px) {
+  .mobile-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .mobile-text {
+    font-size: 0.875rem;
+  }
+}
+  }
+  .luna-checkbox:focus {
+    box-shadow: 0 0 0 4px rgba(236,72,153,0.2);
+    outline: none;
+  }
+  .luna-checkbox:checked {
+    background: linear-gradient(90deg, #ec4899 0%, #f472b6 100%);
+    border-color: #ec4899;
+  }
+  
+  /* Beautiful selection styles */
+  ::selection {
+    background: #fbcfe8;
+    color: #831843;
+  }
+}
+
+@layer utilities {
+  /* Text effects */
+  .text-shadow-soft {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Background patterns */
+@layer components {
+  .luna-gradient-text {
+    background: linear-gradient(90deg, #db2777 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .luna-card {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px rgba(236,72,153,0.08);
+  }
+  
+  .glass-card {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(236,72,153,0.16);
+  }
+  
+  .luna-button {
+    background: linear-gradient(90deg, #ec4899 0%, #f472b6 100%);
+    color: #fff;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .luna-button:hover {
+    background: linear-gradient(90deg, #db2777 0%, #ec4899 100%);
+    transform: scale(1.05);
+  }
+  .luna-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #fbcfe8;
+    color: #fff;
+  }
+  .luna-button:active {
+    color: #fff;
+  }
+  
+  .luna-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    background: rgba(255,255,255,0.9);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    color: #374151;
+  }
+  .luna-input:focus {
+    box-shadow: 0 0 0 2px #ec4899;
+    border-color: transparent;
+    outline: none;
+  }
+  .luna-input::placeholder {
+    color: #9ca3af;
+  }
+}
+}
+
+/* Beautiful focus states */
+.focus-ring {
+  @apply focus:outline-none focus:ring-4 focus:ring-luna-400/30 focus:border-luna-400;
+}
+
+/* Custom animations for Luna Care */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.heartbeat {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+/* Mobile-first responsive design helpers */
+@media (max-width: 640px) {
+  .mobile-padding {
+    @apply px-4;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --luna-50: #fdf2f8;
+  --luna-100: #fce7f3;
+  --luna-200: #fbcfe8;
+  --luna-300: #f9a8d4;
+  --luna-400: #f472b6;
+  --luna-500: #ec4899;
+  --luna-600: #db2777;
+  --luna-700: #be185d;
+  --luna-800: #9d174d;
+  --luna-900: #831843;
+}
+
+@layer base {
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .luna-gradient-text {
+    @apply bg-gradient-to-r from-luna-600 to-pink-600 bg-clip-text text-transparent;
+  }
+  
+  .luna-card {
+    @apply bg-white/90 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg;
+  }
+  
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/30 rounded-2xl shadow-xl;
+  }
+  
+  .luna-button {
+    @apply bg-gradient-to-r from-luna-500 to-pink-500 text-pink-700 font-medium px-6 py-3 rounded-lg;
+    @apply hover:from-luna-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-luna-300 focus:text-pink-700 active:text-white;
+  }
+  
+  .luna-input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 bg-white/90;
+    @apply focus:ring-2 focus:ring-luna-500 focus:border-transparent;
+    @apply placeholder-gray-400 transition-all duration-200;
+  }
+}
+
+@layer utilities {
+  .warm-white { color: #fefefe; }
+  .soft-pink { color: #fce7f3; }
+  .blush { color: #fbcfe8; }
+}
+
+/* Fix button text visibility globally */
+button:focus,
+button:active {
+  color: inherit !important;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Luna Care specific button fixes */
+.luna-button:focus,
+.luna-button:active {
+  color: white !important;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+/* === FIX BUTTON TEXT VISIBILITY ON CLICK === */
+
+/* Prevent text from turning white on button states */
+button, .btn, .button, a[role="button"] {
+  color: inherit !important;
+}
+
+/* Fix active and focus states - keep text visible */
+button:active, 
+button:focus, 
+.btn:active, 
+.btn:focus, 
+.button:active, 
+.button:focus,
+a[role="button"]:active,
+a[role="button"]:focus {
+  color: #1f2937 !important; /* Dark gray text */
+  background-color: rgba(236, 72, 153, 0.1) !important; /* Light pink background */
+  outline: none !important;
+}
+
+/* Navbar specific buttons */
+nav button, 
+.navbar button,
+.nav button {
+  color: #374151 !important; /* Dark gray for navbar */
+}
+
+nav button:active,
+nav button:focus,
+.navbar button:active,
+.navbar button:focus,
+.nav button:active,
+.nav button:focus {
+  color: #1f2937 !important; /* Even darker on click */
+  background-color: rgba(236, 72, 153, 0.15) !important;
+}
+
+/* Fix for any links acting as buttons */
+a:active, a:focus {
+  color: inherit !important;
+}
+
+/* Remove ugly focus outlines but keep accessibility */
+button:focus-visible,
+.btn:focus-visible,
+.button:focus-visible {
+  outline: 2px solid #ec4899;
+  outline-offset: 2px;
+  color: #1f2937 !important;
+}
+
+/* Smooth transitions */
+button, .btn, .button, a[role="button"] {
+  transition: all 0.2s ease !important;
+}
+/* === ENHANCED NAVBAR BUTTON STYLING === */
+
+/* Make navbar buttons more Luna Care branded */
+.navbar button,
+nav button {
+  background: transparent !important;
+  border: 1px solid rgba(236, 72, 153, 0.3) !important;
+  color: #374151 !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.navbar button:hover,
+nav button:hover {
+  background: rgba(236, 72, 153, 0.1) !important;
+  border-color: #ec4899 !important;
+  color: #1f2937 !important;
+  transform: translateY(-1px) !important;
+}
+
+.navbar button:active,
+nav button:active {
+  background: rgba(236, 72, 153, 0.2) !important;
+  color: #1f2937 !important;
+  transform: translateY(0) !important;
+}
+
+/* Fix for Sign Out button specifically */
+.navbar button[onClick*="sign"], 
+button:contains("Sign Out"),
+[class*="sign-out"] {
+  background: linear-gradient(45deg, #ec4899, #f472b6) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.navbar button[onClick*="sign"]:active,
+button:contains("Sign Out"):active,
+[class*="sign-out"]:active {
+  background: linear-gradient(45deg, #db2777, #ec4899) !important;
+  color: white !important;
+}
+/* NUCLEAR OPTION - Force text color everywhere */
+* {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+button *, .btn *, .button * {
+  color: inherit !important;
+}
+
+button:active *,
+button:focus *,
+.btn:active *,
+.btn:focus *,
+.button:active *,
+.button:focus * {
+  color: #1f2937 !important;
+}
+/* === NUCLEAR FIX FOR BUTTON TEXT VISIBILITY === */
+* {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Force button text to always be visible */
+.btn, 
+.button, 
+a[role="button"], 
+nav button,
+.navbar button,
+.nav-link,
+[class*="button"],
+[class*="btn"] {
+  color: #374151 !important;
+  background: transparent !important;
+  border: 1px solid rgba(55, 65, 81, 0.2) !important;
+  transition: none !important;
+}
+
+/* Fix ALL button states */
+button:hover,
+button:focus, 
+button:active,
+button:visited,
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn:visited,
+.button:hover,
+.button:focus,
+.button:active,
+.button:visited,
+a[role="button"]:hover,
+a[role="button"]:focus,
+a[role="button"]:active,
+a[role="button"]:visited,
+nav button:hover,
+nav button:focus,
+nav button:active,
+nav button:visited,
+.navbar button:hover,
+.navbar button:focus,
+.navbar button:active,
+.navbar button:visited {
+  color: #1f2937 !important;
+  background: rgba(236, 72, 153, 0.1) !important;
+  border-color: #ec4899 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+*:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.5) !important;
+}
+
+
+.luna-button,
+.luna-btn {
+  background: linear-gradient(45deg, #ec4899, #f472b6) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.luna-button:hover,
+.luna-button:focus,
+.luna-button:active,
+.luna-btn:hover,
+.luna-btn:focus,
+.luna-btn:active {
+  background: linear-gradient(45deg, #db2777, #ec4899) !important;
+  color: white !important;
+}
+/* === OVERRIDE TAILWIND'S HARDCODED TEXT-WHITE ON BUTTONS === */
+
+/* Remove forced white text from all buttons globally */
+button, 
+.btn, 
+.button,
+[role="button"] {
+  color: inherit !important;
+}
+
+/* Fix button text visibility on all interactive states */
+button:hover,
+button:focus, 
+button:active,
+button:focus-visible,
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn:focus-visible {
+  color: #374151 !important; /* Dark gray for visibility */
+  background-color: rgba(236, 72, 153, 0.1) !important; /* Light pink background */
+  outline: none !important;
+}
+
+/* Override Tailwind's text-white class specifically */
+.text-white button,
+button.text-white,
+.text-white .btn,
+.btn.text-white {
+  color: #374151 !important;
+}
+
+/* Fix navbar buttons specifically */
+nav button, 
+.navbar button,
+.nav button,
+header button {
+  color: #4b5563 !important; /* Medium gray for navbar */
+}
+
+nav button:active,
+nav button:focus,
+.navbar button:active,
+.navbar button:focus,
+header button:active,
+header button:focus {
+  color: #1f2937 !important; /* Darker gray on interaction */
+  background-color: rgba(236, 72, 153, 0.15) !important;
+}
+
+/* Prevent any text-white override */
+* {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Ensure Luna Care buttons maintain proper styling */
+.luna-button,
+.luna-btn {
+  background: linear-gradient(45deg, #ec4899, #f472b6) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.luna-button:hover,
+.luna-button:focus,
+.luna-button:active,
+.luna-btn:hover,
+.luna-btn:focus,
+.luna-btn:active {
+  background: linear-gradient(45deg, #db2777, #ec4899) !important;
+  color: white !important; /* Keep white for branded buttons */
+}
+
+/* Force override any conflicting Tailwind classes */
+button:not(.luna-button):not(.luna-btn) {
+  color: #374151 !important;
+}
+
+button:not(.luna-button):not(.luna-btn):active,
+button:not(.luna-button):not(.luna-btn):focus {
+  color: #1f2937 !important;
+}
+/* Add this at the bottom of index.css - NO NESTING */
+
+/* Fix button text turning white on click */
+button {
+  color: inherit !important;
+}
+
+button:active {
+  color: #374151 !important;
+  background-color: rgba(236, 72, 153, 0.1) !important;
+}
+
+button:focus {
+  color: #374151 !important;
+  background-color: rgba(236, 72, 153, 0.1) !important;
+  outline: none !important;
+}
+
+button:hover {
+  color: #374151 !important;
+}
+
+/* Fix navbar buttons specifically */
+nav button {
+  color: #4b5563 !important;
+}
+
+nav button:active {
+  color: #1f2937 !important;
+  background-color: rgba(236, 72, 153, 0.15) !important;
+}
+
+nav button:focus {
+  color: #1f2937 !important;
+  background-color: rgba(236, 72, 153, 0.15) !important;
+}
+
+/* Override text-white if present */
+.text-white {
+  color: inherit !important;
+}
